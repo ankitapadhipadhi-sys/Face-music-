@@ -4,12 +4,36 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Face Structure Music Player</title>
-  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/face-landmarks-detection"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-core"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-converter"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-webgl"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/face-detection"></script>
   <style>
-    body { font-family: Arial, sans-serif; text-align: center; background: #121212; color: white; padding: 20px; }
-    video { transform: scaleX(-1); border-radius: 12px; width: 90%; max-width: 400px; margin-top: 15px; }
-    button { padding: 14px 28px; font-size: 18px; font-weight: bold; border: none; border-radius: 8px; background: #1DB954; color: white; margin-top: 10px; }
+    body { 
+      font-family: Arial, sans-serif; 
+      text-align: center; 
+      background: #121212; 
+      color: white; 
+      padding: 20px; 
+    }
+    video { 
+      transform: scaleX(-1); 
+      border-radius: 12px; 
+      width: 90%; 
+      max-width: 400px; 
+      margin-top: 15px; 
+    }
+    button { 
+      padding: 14px 28px; 
+      font-size: 18px; 
+      font-weight: bold; 
+      border: none; 
+      border-radius: 8px; 
+      background: #1DB954; 
+      color: white; 
+      margin-top: 10px; 
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -17,48 +41,58 @@
   <p>Scan your face to play tailored music!</p>
   <button onclick="startApp()">Open Camera & Scan Face</button>
   <br>
-  <video id="webcam" autoplay playsinline></video>
+  <video id="webcam" autoplay playsinline muted></video>
   <h3 id="status">Tap the button to start</h3>
 
   <script>
-    let model, video, triggered = false;
+    let detector, video, triggered = false;
 
-    // Songs List
+    // Replace or add your YouTube song links here
     const songs = [
-      "https://www.youtube.com/watch?v=BddP6PYo2gs&autoplay=1",
-      "https://www.youtube.com/watch?v=hoNb6huNbU0&autoplay=1",
-      "https://www.youtube.com/watch?v=ElZfdU54Cp8&autoplay=1"
+      "https://www.youtube.com/watch?v=BddP6PYo2gs",
+      "https://www.youtube.com/watch?v=hoNb6huNbU0",
+      "https://www.youtube.com/watch?v=ElZfdU54Cp8"
     ];
 
     async function startApp() {
-      document.getElementById('status').innerText = "Loading AI Camera...";
+      document.getElementById('status').innerText = "Loading AI Detector...";
       video = document.getElementById('webcam');
       
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
+        const stream = await navigator.mediaDevices.getUserMedia({ 
+          video: { facingMode: "user" }, 
+          audio: false 
+        });
         video.srcObject = stream;
+        await video.play();
 
-        model = await faceLandmarksDetection.load(
-          faceLandmarksDetection.SupportedPackages.mediapipeFacemesh
-        );
+        const model = faceDetection.SupportedModels.MediaPipeFaceDetector;
+        const detectorConfig = { runtime: 'tfjs' };
+        detector = await faceDetection.createDetector(model, detectorConfig);
 
-        document.getElementById('status').innerText = "Look into the camera...";
+        document.getElementById('status').innerText = "Scanning face structure...";
         detectFace();
       } catch (err) {
-        document.getElementById('status').innerText = "Camera access denied or unsupported.";
+        document.getElementById('status').innerText = "Error loading AI model. Refresh & try again.";
+        console.error(err);
       }
     }
 
     async function detectFace() {
       if (triggered) return;
-      const predictions = await model.estimateFaces({ input: video });
-
-      if (predictions.length > 0) {
-        triggered = true;
-        document.getElementById('status').innerText = "Face Detected! Launching Music...";
-        const selectedSong = songs[Math.floor(Math.random() * songs.length)];
-        window.location.href = selectedSong;
-      } else {
+      try {
+        const faces = await detector.estimateFaces(video);
+        if (faces.length > 0) {
+          triggered = true;
+          document.getElementById('status').innerText = "Face Detected! Launching YouTube...";
+          const selectedSong = songs[Math.floor(Math.random() * songs.length)];
+          setTimeout(() => {
+            window.location.href = selectedSong;
+          }, 1000);
+        } else {
+          requestAnimationFrame(detectFace);
+        }
+      } catch (e) {
         requestAnimationFrame(detectFace);
       }
     }
