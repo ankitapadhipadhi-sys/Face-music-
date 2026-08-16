@@ -43,31 +43,31 @@
     let triggered = false;
     let video = null;
 
-    // --- Hindi Song Playlists ---
+    // --- Official Verified YouTube Music Links ---
     const playlists = {
       boys: [
-        "https://www.youtube.com/watch?v=ElZfdU54Cp8", // Apna Bana Le
-        "https://www.youtube.com/watch?v=V7LwfY5U_BU", // Chaleya
-        "https://www.youtube.com/watch?v=IJq0yyWug1k", // Tum Hi Ho
-        "https://www.youtube.com/watch?v=g6fnFALEseI", // Raataan Lambiyan
-        "https://www.youtube.com/watch?v=v0NkyvU3G2I", // Shayad
-        "https://www.youtube.com/watch?v=0kG8tYqI7kU", // Tera Ban Jaunga
-        "https://www.youtube.com/watch?v=mt91gP5p0io", // Tum Se Hi
-        "https://www.youtube.com/watch?v=g0eO74Umw6g", // Kal Ho Naa Ho
-        "https://www.youtube.com/watch?v=284Ov7ysfaY", // Pehlee Bhi Main
-        "https://www.youtube.com/watch?v=jHNNMj5bNQw"  // Kabira
+        "https://www.youtube.com/watch?v=ElZfdU54Cp8", // Apna Bana Le (Zee Music)
+        "https://www.youtube.com/watch?v=v0NkyvU3G2I", // Shayad (Sony Music)
+        "https://www.youtube.com/watch?v=sCbbMZ-q4-g", // Tum Hi Ho (T-Series)
+        "https://www.youtube.com/watch?v=g6fnFALEseI", // Raataan Lambiyan (Sony Music)
+        "https://www.youtube.com/watch?v=0kG8tYqI7kU", // Tera Ban Jaunga (T-Series)
+        "https://www.youtube.com/watch?v=g0eO74Umw6g", // Kal Ho Naa Ho (Sony Music)
+        "https://www.youtube.com/watch?v=284Ov7ysfaY", // Pehlee Bhi Main (T-Series)
+        "https://www.youtube.com/watch?v=jHNNMj5bNQw", // Kabira (T-Series)
+        "https://www.youtube.com/watch?v=V7LwfY5U_BU", // Chaleya (Red Chillies)
+        "https://www.youtube.com/watch?v=ax62p1sO4G0"  // Tum Se Hi (T-Series)
       ],
       girls: [
-        "https://www.youtube.com/watch?v=BddP6PYo2gs", // Kesariya
-        "https://www.youtube.com/watch?v=v_vT8n-qE_g", // Param Sundari
-        "https://www.youtube.com/watch?v=Q84P21F10A4", // Nainowale Ne
-        "https://www.youtube.com/watch?v=zRtPQIciC8g", // Deewani Mastani
-        "https://www.youtube.com/watch?v=4TWR90KJl84", // Ghar More Pardesiya
-        "https://www.youtube.com/watch?v=SAcpESN_Fk4", // Dil Diyan Gallan
-        "https://www.youtube.com/watch?v=hoNb6huNbU0", // Manwa Laage
-        "https://www.youtube.com/watch?v=dCmp56tSSNc", // Lehra Do
-        "https://www.youtube.com/watch?v=Kky_pCH4-18", // Tere Waaste
-        "https://www.youtube.com/watch?v=gNi_6U5gl6A"  // Ranjhana
+        "https://www.youtube.com/watch?v=BddP6PYo2gs", // Kesariya (Sony Music)
+        "https://www.youtube.com/watch?v=v_vT8n-qE_g", // Param Sundari (Sony Music)
+        "https://www.youtube.com/watch?v=Q84P21F10A4", // Nainowale Ne (T-Series)
+        "https://www.youtube.com/watch?v=zRtPQIciC8g", // Deewani Mastani (Eros Now)
+        "https://www.youtube.com/watch?v=4TWR90KJl84", // Ghar More Pardesiya (Zee Music)
+        "https://www.youtube.com/watch?v=SAcpESN_Fk4", // Dil Diyan Gallan (YRF)
+        "https://www.youtube.com/watch?v=hoNb6huNbU0", // Manwa Laage (Red Chillies)
+        "https://www.youtube.com/watch?v=dCmp56tSSNc", // Lehra Do (Zee Music)
+        "https://www.youtube.com/watch?v=Kky_pCH4-18", // Tere Waaste (Saregama)
+        "https://www.youtube.com/watch?v=gNi_6U5gl6A"  // Ranjhana (T-Series)
       ]
     };
 
@@ -98,7 +98,7 @@
         video.srcObject = stream;
         await video.play();
 
-        document.getElementById('status').innerText = `Scanning for ${selectedPlaylistType}...`;
+        document.getElementById('status').innerText = `Scanning face structure...`;
         
         setTimeout(() => {
           if (!triggered) {
@@ -121,5 +121,3 @@
   </script>
 </body>
 </html>
-
-
