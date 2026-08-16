@@ -5,53 +5,89 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Face Structure Music Player</title>
   <style>
-    body { 
-      font-family: Arial, sans-serif; 
-      text-align: center; 
-      background: #121212; 
-      color: white; 
-      padding: 20px; 
-    }
-    video { 
-      transform: scaleX(-1); 
-      border-radius: 12px; 
-      width: 90%; 
-      max-width: 400px; 
-      margin-top: 15px; 
-    }
-    button { 
-      padding: 14px 28px; 
-      font-size: 18px; 
-      font-weight: bold; 
-      border: none; 
-      border-radius: 8px; 
-      background: #1DB954; 
-      color: white; 
-      margin-top: 10px; 
-      cursor: pointer;
-    }
+    body { font-family: Arial, sans-serif; text-align: center; background: #121212; color: white; padding: 20px; }
+    h2 { margin-bottom: 5px; }
+    #setup-screen, #camera-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 80vh; }
+    #camera-screen { display: none; }
+    .button-group { display: flex; gap: 15px; margin-top: 20px; }
+    button { padding: 14px 28px; font-size: 18px; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; transition: 0.2s; }
+    .gender-btn { background: #333; color: white; border: 2px solid transparent; }
+    .gender-btn.active { border-color: #1DB954; background: #1DB954; }
+    #start-btn { background: #1DB954; color: white; margin-top: 30px; display: none; }
+    video { transform: scaleX(-1); border-radius: 12px; width: 90%; max-width: 400px; margin-top: 15px; background: #000; }
+    #status { margin-top: 15px; color: #aaa; }
   </style>
 </head>
 <body>
-  <h2>AI Face Music Player</h2>
-  <p>Scan your face to play tailored music!</p>
-  <button onclick="startApp()">Open Camera & Scan Face</button>
-  <br>
-  <video id="webcam" autoplay playsinline muted></video>
-  <h3 id="status">Tap the button to start</h3>
+
+  <!-- Screen 1: Selection -->
+  <div id="setup-screen">
+    <h2>AI Face Music Player</h2>
+    <p>Select a playlist category:</p>
+    <div class="button-group">
+      <button class="gender-btn" id="btn-boys" onclick="selectGender('boys')">Boys</button>
+      <button class="gender-btn" id="btn-girls" onclick="selectGender('girls')">Girls</button>
+    </div>
+    <button id="start-btn" onclick="goToCamera()">Continue to Scan</button>
+  </div>
+
+  <!-- Screen 2: Camera & Scanning -->
+  <div id="camera-screen">
+    <h2>Scanning Face</h2>
+    <video id="webcam" autoplay playsinline muted></video>
+    <h3 id="status">Wait...</h3>
+  </div>
 
   <script>
-    let video, triggered = false;
+    let selectedPlaylistType = null;
+    let triggered = false;
+    let video = null;
 
-    // Add or change your YouTube music links here
-    const songs = [
-      "https://www.youtube.com/watch?v=BddP6PYo2gs",
-      "https://www.youtube.com/watch?v=hoNb6huNbU0",
-      "https://www.youtube.com/watch?v=ElZfdU54Cp8"
-    ];
+    // --- Hindi Song Playlists ---
+    const playlists = {
+      boys: [
+        "https://www.youtube.com/watch?v=ElZfdU54Cp8", // Apna Bana Le
+        "https://www.youtube.com/watch?v=V7LwfY5U_BU", // Chaleya
+        "https://www.youtube.com/watch?v=IJq0yyWug1k", // Tum Hi Ho
+        "https://www.youtube.com/watch?v=g6fnFALEseI", // Raataan Lambiyan
+        "https://www.youtube.com/watch?v=v0NkyvU3G2I", // Shayad
+        "https://www.youtube.com/watch?v=0kG8tYqI7kU", // Tera Ban Jaunga
+        "https://www.youtube.com/watch?v=mt91gP5p0io", // Tum Se Hi
+        "https://www.youtube.com/watch?v=g0eO74Umw6g", // Kal Ho Naa Ho
+        "https://www.youtube.com/watch?v=284Ov7ysfaY", // Pehlee Bhi Main
+        "https://www.youtube.com/watch?v=jHNNMj5bNQw"  // Kabira
+      ],
+      girls: [
+        "https://www.youtube.com/watch?v=BddP6PYo2gs", // Kesariya
+        "https://www.youtube.com/watch?v=v_vT8n-qE_g", // Param Sundari
+        "https://www.youtube.com/watch?v=Q84P21F10A4", // Nainowale Ne
+        "https://www.youtube.com/watch?v=zRtPQIciC8g", // Deewani Mastani
+        "https://www.youtube.com/watch?v=4TWR90KJl84", // Ghar More Pardesiya
+        "https://www.youtube.com/watch?v=SAcpESN_Fk4", // Dil Diyan Gallan
+        "https://www.youtube.com/watch?v=hoNb6huNbU0", // Manwa Laage
+        "https://www.youtube.com/watch?v=dCmp56tSSNc", // Lehra Do
+        "https://www.youtube.com/watch?v=Kky_pCH4-18", // Tere Waaste
+        "https://www.youtube.com/watch?v=gNi_6U5gl6A"  // Ranjhana
+      ]
+    };
 
-    async function startApp() {
-      document.getElementById('status').innerText = "Starting Camera...";
+    function selectGender(gender) {
+      selectedPlaylistType = gender;
+      document.getElementById('btn-boys').classList.remove('active');
+      document.getElementById('btn-girls').classList.remove('active');
+      document.getElementById('btn-'+gender).classList.add('active');
+      document.getElementById('start-btn').style.display = 'block';
+    }
+
+    function goToCamera() {
+      if (!selectedPlaylistType) return;
+      document.getElementById('setup-screen').style.display = 'none';
+      document.getElementById('camera-screen').style.display = 'flex';
+      startCamera();
+    }
+
+    async function startCamera() {
+      document.getElementById('status').innerText = "Initializing Camera...";
       video = document.getElementById('webcam');
       
       try {
@@ -62,25 +98,28 @@
         video.srcObject = stream;
         await video.play();
 
-        document.getElementById('status').innerText = "Scanning face structure...";
+        document.getElementById('status').innerText = `Scanning for ${selectedPlaylistType}...`;
         
-        // Simulates scanning and redirects to YouTube after 3 seconds
         setTimeout(() => {
           if (!triggered) {
             triggered = true;
             document.getElementById('status').innerText = "Face Detected! Launching YouTube...";
-            const selectedSong = songs[Math.floor(Math.random() * songs.length)];
+            
+            const currentPlaylist = playlists[selectedPlaylistType];
+            const selectedSong = currentPlaylist[Math.floor(Math.random() * currentPlaylist.length)];
+            
             setTimeout(() => {
               window.location.href = selectedSong;
             }, 1000);
           }
-        }, 3000);
+        }, 3500);
 
       } catch (err) {
-        document.getElementById('status').innerText = "Camera access error. Please check browser permissions.";
+        document.getElementById('status').innerText = "Error: Camera access denied. Check permissions.";
       }
     }
   </script>
 </body>
 </html>
+
 
