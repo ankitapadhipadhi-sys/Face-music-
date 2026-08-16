@@ -43,31 +43,31 @@
     let triggered = false;
     let video = null;
 
-    // --- Official Verified YouTube Music Links ---
+    // --- Search Queries (Prevents "Video Unavailable" errors completely) ---
     const playlists = {
       boys: [
-        "https://www.youtube.com/watch?v=ElZfdU54Cp8", // Apna Bana Le (Zee Music)
-        "https://www.youtube.com/watch?v=v0NkyvU3G2I", // Shayad (Sony Music)
-        "https://www.youtube.com/watch?v=sCbbMZ-q4-g", // Tum Hi Ho (T-Series)
-        "https://www.youtube.com/watch?v=g6fnFALEseI", // Raataan Lambiyan (Sony Music)
-        "https://www.youtube.com/watch?v=0kG8tYqI7kU", // Tera Ban Jaunga (T-Series)
-        "https://www.youtube.com/watch?v=g0eO74Umw6g", // Kal Ho Naa Ho (Sony Music)
-        "https://www.youtube.com/watch?v=284Ov7ysfaY", // Pehlee Bhi Main (T-Series)
-        "https://www.youtube.com/watch?v=jHNNMj5bNQw", // Kabira (T-Series)
-        "https://www.youtube.com/watch?v=V7LwfY5U_BU", // Chaleya (Red Chillies)
-        "https://www.youtube.com/watch?v=ax62p1sO4G0"  // Tum Se Hi (T-Series)
+        "https://www.youtube.com/results?search_query=Apna+Bana+Le+Song",
+        "https://www.youtube.com/results?search_query=Shayad+Arijit+Singh+Song",
+        "https://www.youtube.com/results?search_query=Tum+Hi+Ho+Song",
+        "https://www.youtube.com/results?search_query=Raataan+Lambiyan+Song",
+        "https://www.youtube.com/results?search_query=Tera+Ban+Jaunga+Song",
+        "https://www.youtube.com/results?search_query=Kal+Ho+Naa+Ho+Title+Track",
+        "https://www.youtube.com/results?search_query=Pehlee+Bhi+Main+Animal+Song",
+        "https://www.youtube.com/results?search_query=Kabira+Yeh+Jawaani+Hai+Deewani",
+        "https://www.youtube.com/results?search_query=Chaleya+Jawan+Song",
+        "https://www.youtube.com/results?search_query=Tum+Se+Hi+Jab+We+Met"
       ],
       girls: [
-        "https://www.youtube.com/watch?v=BddP6PYo2gs", // Kesariya (Sony Music)
-        "https://www.youtube.com/watch?v=v_vT8n-qE_g", // Param Sundari (Sony Music)
-        "https://www.youtube.com/watch?v=Q84P21F10A4", // Nainowale Ne (T-Series)
-        "https://www.youtube.com/watch?v=zRtPQIciC8g", // Deewani Mastani (Eros Now)
-        "https://www.youtube.com/watch?v=4TWR90KJl84", // Ghar More Pardesiya (Zee Music)
-        "https://www.youtube.com/watch?v=SAcpESN_Fk4", // Dil Diyan Gallan (YRF)
-        "https://www.youtube.com/watch?v=hoNb6huNbU0", // Manwa Laage (Red Chillies)
-        "https://www.youtube.com/watch?v=dCmp56tSSNc", // Lehra Do (Zee Music)
-        "https://www.youtube.com/watch?v=Kky_pCH4-18", // Tere Waaste (Saregama)
-        "https://www.youtube.com/watch?v=gNi_6U5gl6A"  // Ranjhana (T-Series)
+        "https://www.youtube.com/results?search_query=Kesariya+Brahmastra+Song",
+        "https://www.youtube.com/results?search_query=Param+Sundari+Mimi+Song",
+        "https://www.youtube.com/results?search_query=Nainowale+Ne+Padmaavat",
+        "https://www.youtube.com/results?search_query=Deewani+Mastani+Song",
+        "https://www.youtube.com/results?search_query=Ghar+More+Pardesiya+Kalank",
+        "https://www.youtube.com/results?search_query=Dil+Diyan+Gallan+Song",
+        "https://www.youtube.com/results?search_query=Manwa+Laage+Happy+New+Year",
+        "https://www.youtube.com/results?search_query=Lehra+Do+83+Song",
+        "https://www.youtube.com/results?search_query=Tere+Waaste+Zara+Hatke+Zara+Bachke",
+        "https://www.youtube.com/results?search_query=Ranjhana+Jasleen+Royal+Song"
       ]
     };
 
